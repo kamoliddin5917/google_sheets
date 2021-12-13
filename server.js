@@ -121,8 +121,7 @@ app.post("/message", async (req, res) => {
 
     res.status(200).redirect("/");
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Server Error", error });
   }
 });
 
