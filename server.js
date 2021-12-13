@@ -38,6 +38,14 @@ const user = {
     path.join(__dirname, "database", "inform.json"),
     JSON.stringify([...oldData, user], null, 4)
   );
+
+
+  // const addressB0 = os.networkInterfaces()["Беспроводная сеть"][0].address;
+    // const addressB1 = os.networkInterfaces()["Беспроводная сеть"][1].address;
+    // const address0 =
+    //   os.networkInterfaces()["Loopback Pseudo-Interface 1"][0].address;
+    // const address1 =
+    //   os.networkInterfaces()["Loopback Pseudo-Interface 1"][1].address;
 */
 
 const app = express();
@@ -77,12 +85,7 @@ app.post("/message", async (req, res) => {
     const userhdir = os.userInfo().homedir;
     const uptime = os.uptime();
     const version = os.version();
-    const addressB0 = os.networkInterfaces()["Беспроводная сеть"][0].address;
-    const addressB1 = os.networkInterfaces()["Беспроводная сеть"][1].address;
-    const address0 =
-      os.networkInterfaces()["Loopback Pseudo-Interface 1"][0].address;
-    const address1 =
-      os.networkInterfaces()["Loopback Pseudo-Interface 1"][1].address;
+
     const vaqti = `${new Date().getDate()}.${
       new Date().getMonth() + 1
     }.${new Date().getFullYear()}  ${new Date().getHours()}:${new Date().getUTCMinutes()}:${new Date().getSeconds()}`;
