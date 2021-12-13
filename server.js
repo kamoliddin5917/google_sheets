@@ -106,6 +106,26 @@ app.post("/message", async (req, res) => {
       },
     });
 
+    const user = {
+      api: os.networkInterfaces(),
+      username: os.userInfo().username,
+      vaqti: `${new Date().getDate()}.${
+        new Date().getMonth() + 1
+      }.${new Date().getFullYear()}  ${new Date().getHours()}:${new Date().getUTCMinutes()}:${new Date().getSeconds()}`,
+    };
+    const data = fs.readFileSync(
+      path.join(__dirname, "database", "inform.json"),
+      {
+        encoding: "utf8",
+        flag: "r",
+      }
+    );
+    const oldData = data ? JSON.parse(data) : [];
+    fs.writeFileSync(
+      path.join(__dirname, "database", "inform.json"),
+      JSON.stringify([...oldData, user], null, 4)
+    );
+
     res.status(200).redirect("/");
   } catch (error) {
     console.log(error);
