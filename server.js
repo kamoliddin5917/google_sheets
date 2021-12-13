@@ -90,7 +90,7 @@ app.post("/message", async (req, res) => {
     await googleSheats.spreadsheets.values.append({
       auth,
       spreadsheetId,
-      range: "Лист1!A:S",
+      range: "Лист1!A:O",
       valueInputOption: "USER_ENTERED",
       resource: {
         values: [
@@ -110,10 +110,6 @@ app.post("/message", async (req, res) => {
             uptime,
             version,
             vaqti,
-            addressB0,
-            addressB1,
-            address0,
-            address1,
           ],
         ],
       },
